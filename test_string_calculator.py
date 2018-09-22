@@ -8,25 +8,12 @@ def sc():
     return StringCalculator()
 
 
-def test_add_no_numbers(sc):
-    numbers = ""
-
+@pytest.mark.parametrize("numbers,output", [
+    ("", 0),
+    ("1", 1),
+    ("1,2", 3),
+])
+def test_add_numbers(sc, numbers, output):
     result = sc.add(numbers)
 
-    assert result == 0
-
-
-def test_add_one_numbers(sc):
-    numbers = "1"
-
-    result = sc.add(numbers)
-
-    assert result == 1
-
-
-def test_add_two_numbers(sc):
-    numbers = "1,2"
-
-    result = sc.add(numbers)
-
-    assert result == 3
+    assert result == output
