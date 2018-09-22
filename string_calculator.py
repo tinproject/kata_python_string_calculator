@@ -1,8 +1,8 @@
 # Solution to http://www.solveet.com/exercises/Kata-String-Calculator/8
-from typing import List, Optional, Union, Tuple
+from typing import List, Union, Tuple
 
 
-def extract_delimiter(lines: List[str]) -> Tuple[List[str], Union[str, List[str]]]:
+def extract_delimiters(lines: List[str]) -> Tuple[List[str], Union[str, List[str]]]:
     DEFAULT_DELIMITER = ","
     if not lines[0].startswith('//'):
         return lines, [DEFAULT_DELIMITER]
@@ -19,7 +19,7 @@ def extract_delimiter(lines: List[str]) -> Tuple[List[str], Union[str, List[str]
 
     # Multiple character delimiters
     if delimiter_line.startswith("[") and delimiter_line.endswith("]"):
-        delimiters = [delimiter_line[1:-1]]
+        delimiters = [str.lstrip(d, "[") for d in delimiter_line.split("]") if d]
         return lines, delimiters
 
     raise ValueError("This is not a valid delimiter line")
@@ -32,9 +32,15 @@ class StringCalculator:
 
         lines = numbers.splitlines()
 
-        lines, delimiters = extract_delimiter(lines)
+        # Split numbers by line
+        numbers_str, delimiters = extract_delimiters(lines)
 
-        number_list = [int(n) for line in lines for d in delimiters for n in line.split(d)]
+        # Split numbers by delimiters
+        for delimiter in delimiters:
+            numbers_str = [s for line in numbers_str for s in line.split(delimiter)]
+
+        # Transform string numbers to integers
+        number_list = [int(n) for n in numbers_str]
 
         negative_numbers = list(filter(lambda x: x < 0, number_list))
         if len(negative_numbers) > 0:

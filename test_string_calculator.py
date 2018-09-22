@@ -1,6 +1,6 @@
 import pytest
 
-from string_calculator import StringCalculator
+from string_calculator import StringCalculator, extract_delimiters
 
 
 @pytest.fixture
@@ -67,6 +67,27 @@ def test_add_numbers_step6(sc, numbers, output):
     ("//[***]\n1***2***3", 6),
 ])
 def test_add_numbers_step7(sc, numbers, output):
+    result = sc.add(numbers)
+
+    assert result == output
+
+
+@pytest.mark.parametrize("numbers,out_lines,delimiters", [
+    ("//[*][%]\n1*2%3", ["1*2%3"], ["*", "%"]),
+    ("//[jer]\n1\n2jer3", ["1", "2jer3"], ["jer"]),
+    ("//d\n5d1\n2\n3", ["5d1", "2", "3"], ["d"])
+])
+def test_extract_delimiters(numbers, out_lines, delimiters):
+
+    assert out_lines, delimiters == extract_delimiters(numbers)
+
+
+@pytest.mark.parametrize("numbers,output", [
+    ("//[*][%]\n1*2%3", 6),
+    ("//[jer]\n1\n2jer3", 6),
+    ("//[delimiter][f]\n5delimiter1\n2f5\n3\n5", 21)
+])
+def test_add_numbers_step8(sc, numbers, output):
     result = sc.add(numbers)
 
     assert result == output
