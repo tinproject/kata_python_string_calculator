@@ -14,6 +14,9 @@ def sc():
     ("1,2", 3),
     ("1,2,3,4,5,6,7,8", 36),
     ("5,556,321,21,7,78", 988),
+    ("1\n2,3", 6),
+    ("1\n2\n3,5\n5", 16),
+    ("5,1\n2\n3\n5", 16),
 ])
 def test_add_numbers(sc, numbers, output):
     result = sc.add(numbers)
