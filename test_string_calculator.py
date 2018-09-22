@@ -67,14 +67,15 @@ def test_add_numbers_step7(numbers, output):
     assert result == output
 
 
-@pytest.mark.parametrize("numbers,out_lines,delimiters", [
-    ("//[*][%]\n1*2%3", ["1*2%3"], ["*", "%"]),
-    ("//[jer]\n1\n2jer3", ["1", "2jer3"], ["jer"]),
-    ("//d\n5d1\n2\n3", ["5d1", "2", "3"], ["d"])
+@pytest.mark.parametrize("numbers,delimiters", [
+    ("//[*][%]", ["*", "%"]),
+    ("//[jer]", ["jer"]),
+    ("//d", ["d"]),
+    ("//delimiter", ["delimiter"]),
 ])
-def test_extract_delimiters(numbers, out_lines, delimiters):
+def test_extract_delimiters(numbers, delimiters):
 
-    assert out_lines, delimiters == extract_delimiters(numbers)
+    assert delimiters == extract_delimiters(numbers)
 
 
 @pytest.mark.parametrize("numbers,output", [

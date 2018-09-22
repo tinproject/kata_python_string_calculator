@@ -2,37 +2,44 @@
 from typing import List, Union, Tuple
 
 
-def extract_delimiters(lines: List[str]) -> Tuple[List[str], Union[str, List[str]]]:
+def extract_delimiters(delimiter_line: str) -> List[str]:
+    """
+    Extract the delimiters from a delimiter line
+    :param delimiter_line: the line that define the delimiters
+    :return: a list of delimiters
+    """
     DEFAULT_DELIMITER = ","
-    if not lines[0].startswith('//'):
-        return lines, [DEFAULT_DELIMITER]
+    if not delimiter_line.startswith('//'):
+        return [DEFAULT_DELIMITER]
 
-    first_line = lines[0]
-    lines = lines[1:]
-
-    delimiter_line = first_line[2:]  # Remove delimiter line mark
+    delimiter_line = delimiter_line[2:]  # Remove delimiter line mark
 
     # only one delmiter
     if "[" not in delimiter_line and "]" not in delimiter_line:
         delimiters = [delimiter_line]
-        return lines, delimiters
+        return delimiters
 
     # Multiple character delimiters
     if delimiter_line.startswith("[") and delimiter_line.endswith("]"):
         delimiters = [str.lstrip(d, "[") for d in delimiter_line.split("]") if d]
-        return lines, delimiters
+        return delimiters
 
     raise ValueError("This is not a valid delimiter line")
 
 
-def add(numbers: str) -> int:
-    if not numbers:
-        return 0
+def get_numbers_from_string(numbers_string: str) -> List[int]:
+    """
+    This function extract a list of numbers from a string according to kata text
+    :param numbers_string: the numbers string
+    :return: list of integer numbers
+    """
 
-    lines = numbers.splitlines()
+    lines = numbers_string.splitlines()
 
-    # Split numbers by line
-    numbers_str, delimiters = extract_delimiters(lines)
+    has_delimiters = lines[0].startswith('//')
+
+    delimiters = extract_delimiters(lines[0]) if has_delimiters else [',']  # Default delimiter
+    numbers_str = lines[1:] if has_delimiters else lines
 
     # Split numbers by delimiters
     for delimiter in delimiters:
@@ -40,6 +47,14 @@ def add(numbers: str) -> int:
 
     # Transform string numbers to integers
     number_list = [int(n) for n in numbers_str]
+    return number_list
+
+
+def add(numbers: str) -> int:
+    if not numbers:
+        return 0
+
+    number_list = get_numbers_from_string(numbers)
 
     negative_numbers = list(filter(lambda x: x < 0, number_list))
     if len(negative_numbers) > 0:
