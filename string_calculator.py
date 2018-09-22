@@ -12,8 +12,8 @@ def extract_delimiters(lines: List[str]) -> Tuple[List[str], Union[str, List[str
 
     delimiter_line = first_line[2:]  # Remove delimiter line mark
 
-    # normal one character delimiters
-    if len(delimiter_line) == 1:
+    # only one delmiter
+    if "[" not in delimiter_line and "]" not in delimiter_line:
         delimiters = [delimiter_line]
         return lines, delimiters
 

@@ -91,3 +91,14 @@ def test_add_numbers_step8(sc, numbers, output):
     result = sc.add(numbers)
 
     assert result == output
+
+
+@pytest.mark.parametrize("numbers,output", [
+    ("//;\n1;2", 3),
+    ("//je\n1\n2je3", 6),
+    ("//delim\n1\n2\n3delim5\n5", 16),
+])
+def test_add_numbers_step9(sc, numbers, output):
+    result = sc.add(numbers)
+
+    assert result == output
