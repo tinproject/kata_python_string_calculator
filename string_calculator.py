@@ -25,27 +25,26 @@ def extract_delimiters(lines: List[str]) -> Tuple[List[str], Union[str, List[str
     raise ValueError("This is not a valid delimiter line")
 
 
-class StringCalculator:
-    def add(self, numbers: str) -> int:
-        if not numbers:
-            return 0
+def add(numbers: str) -> int:
+    if not numbers:
+        return 0
 
-        lines = numbers.splitlines()
+    lines = numbers.splitlines()
 
-        # Split numbers by line
-        numbers_str, delimiters = extract_delimiters(lines)
+    # Split numbers by line
+    numbers_str, delimiters = extract_delimiters(lines)
 
-        # Split numbers by delimiters
-        for delimiter in delimiters:
-            numbers_str = [s for line in numbers_str for s in line.split(delimiter)]
+    # Split numbers by delimiters
+    for delimiter in delimiters:
+        numbers_str = [s for line in numbers_str for s in line.split(delimiter)]
 
-        # Transform string numbers to integers
-        number_list = [int(n) for n in numbers_str]
+    # Transform string numbers to integers
+    number_list = [int(n) for n in numbers_str]
 
-        negative_numbers = list(filter(lambda x: x < 0, number_list))
-        if len(negative_numbers) > 0:
-            raise ValueError("negativos no soportados {}".format(",".join(map(str, negative_numbers))))
+    negative_numbers = list(filter(lambda x: x < 0, number_list))
+    if len(negative_numbers) > 0:
+        raise ValueError("negativos no soportados {}".format(",".join(map(str, negative_numbers))))
 
-        number_list = filter(lambda n: n <= 1000, number_list)
+    number_list = filter(lambda n: n <= 1000, number_list)
 
-        return sum(number_list)
+    return sum(number_list)

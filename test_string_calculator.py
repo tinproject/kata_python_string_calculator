@@ -1,11 +1,6 @@
 import pytest
 
-from string_calculator import StringCalculator, extract_delimiters
-
-
-@pytest.fixture
-def sc():
-    return StringCalculator()
+from string_calculator import add, extract_delimiters
 
 
 @pytest.mark.parametrize("numbers,output", [
@@ -18,8 +13,8 @@ def sc():
     ("1\n2\n3,5\n5", 16),
     ("5,1\n2\n3\n5", 16),
 ])
-def test_add_numbers(sc, numbers, output):
-    result = sc.add(numbers)
+def test_add_numbers(numbers, output):
+    result = add(numbers)
 
     assert result == output
 
@@ -30,8 +25,8 @@ def test_add_numbers(sc, numbers, output):
     ("//j\n1\n2\n3j5\n5", 16),
     ("//j\n5j1\n2\n3\n5", 16)
 ])
-def test_add_numbers_step4(sc, numbers, output):
-    result = sc.add(numbers)
+def test_add_numbers_step4(numbers, output):
+    result = add(numbers)
 
     assert result == output
 
@@ -42,10 +37,10 @@ def test_add_numbers_step4(sc, numbers, output):
     ("//j\n1\n-2\n3j5\n5", "-2"),
     ("//j\n5j1\n-2\n3\n5", "-2")
 ])
-def test_add_numbers_step5(sc, numbers, negative_numbers):
+def test_add_numbers_step5(numbers, negative_numbers):
 
     with pytest.raises(ValueError) as excinfo:
-        sc.add(numbers)
+        add(numbers)
 
     assert "negativos no soportados" in str(excinfo.value)
     assert negative_numbers in str(excinfo.value)
@@ -57,8 +52,8 @@ def test_add_numbers_step5(sc, numbers, negative_numbers):
     ("1,2,3,4,1001,5,6,7,8", 36),
     ("5,556,321, 1000,21,7,78", 1988),
 ])
-def test_add_numbers_step6(sc, numbers, output):
-    result = sc.add(numbers)
+def test_add_numbers_step6(numbers, output):
+    result = add(numbers)
 
     assert result == output
 
@@ -66,8 +61,8 @@ def test_add_numbers_step6(sc, numbers, output):
 @pytest.mark.parametrize("numbers,output", [
     ("//[***]\n1***2***3", 6),
 ])
-def test_add_numbers_step7(sc, numbers, output):
-    result = sc.add(numbers)
+def test_add_numbers_step7(numbers, output):
+    result = add(numbers)
 
     assert result == output
 
@@ -87,8 +82,8 @@ def test_extract_delimiters(numbers, out_lines, delimiters):
     ("//[jer]\n1\n2jer3", 6),
     ("//[delimiter][f]\n5delimiter1\n2f5\n3\n5", 21)
 ])
-def test_add_numbers_step8(sc, numbers, output):
-    result = sc.add(numbers)
+def test_add_numbers_step8(numbers, output):
+    result = add(numbers)
 
     assert result == output
 
@@ -98,7 +93,7 @@ def test_add_numbers_step8(sc, numbers, output):
     ("//je\n1\n2je3", 6),
     ("//delim\n1\n2\n3delim5\n5", 16),
 ])
-def test_add_numbers_step9(sc, numbers, output):
-    result = sc.add(numbers)
+def test_add_numbers_step9(numbers, output):
+    result = add(numbers)
 
     assert result == output
