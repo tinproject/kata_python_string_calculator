@@ -6,5 +6,5 @@ class StringCalculator:
         if not numbers:
             return 0
 
-        number_list = [int(n) for n in numbers.split(",")]
+        number_list = (int(n) for n in numbers.split(","))
         return sum(number_list)
