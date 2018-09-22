@@ -19,4 +19,6 @@ class StringCalculator:
         if len(negative_numbers) > 0:
             raise ValueError("negativos no soportados {}".format(",".join(map(str, negative_numbers))))
 
+        number_list = filter(lambda n: n <= 1000, number_list)
+
         return sum(number_list)

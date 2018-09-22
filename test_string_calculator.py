@@ -49,3 +49,15 @@ def test_add_numbers_step5(sc, numbers, negative_numbers):
 
     assert "negativos no soportados" in str(excinfo.value)
     assert negative_numbers in str(excinfo.value)
+
+
+@pytest.mark.parametrize("numbers,output", [
+    ("2000", 0),
+    ("1,2000", 1),
+    ("1,2,3,4,1001,5,6,7,8", 36),
+    ("5,556,321, 1000,21,7,78", 1988),
+])
+def test_add_numbers_step6(sc, numbers, output):
+    result = sc.add(numbers)
+
+    assert result == output
