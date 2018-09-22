@@ -22,3 +22,15 @@ def test_add_numbers(sc, numbers, output):
     result = sc.add(numbers)
 
     assert result == output
+
+
+@pytest.mark.parametrize("numbers,output", [
+    ("//;\n1;2", 3),
+    ("//j\n1\n2j3", 6),
+    ("//j\n1\n2\n3j5\n5", 16),
+    ("//j\n5j1\n2\n3\n5", 16)
+])
+def test_add_numbers_step4(sc, numbers, output):
+    result = sc.add(numbers)
+
+    assert result == output
